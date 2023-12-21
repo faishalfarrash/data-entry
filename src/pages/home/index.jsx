@@ -1,4 +1,38 @@
+import { useState } from "react";
+
+const bob = [
+    {
+        date: "22-12-2023",
+        letter_number: "070/3555-kesbangpol.poldagri",
+        sifat: true,
+        perihal: "Permohonan",
+        dari: "Tadi",
+        tujuan: "Kesbang",
+    }
+]
+
 export default function Home() {
+    const [nomorSurat, setNomorSurat] = useState();
+    const data = JSON.parse(localStorage.getItem('data') || JSON.stringify([])) || [];
+    const [sifatSurat, setSifatSurat] = useState();
+    const [perihal, setPerihal] = useState();
+    const [dari, setDari] = useState();
+    const [tujuan, setTujuan] = useState();
+
+    const handleSubmit = () => {
+        const inputData = {
+            date: "22-12-2023",
+            letter_number: nomorSurat,
+            sifat: sifatSurat,
+            perihal,
+            dari,
+            tujuan,
+        }
+
+        const updated = [...data, inputData];
+        localStorage.setItem("data", JSON.stringify(updated));
+    }
+
     return (
         <div className="wrapper">
             <div className="selection">
@@ -24,26 +58,19 @@ export default function Home() {
                                 <th> TUJUAN </th>
                                 <th> ACTION </th>
                             </tr>
-                            <tr>
-                                <td> 1 </td>
-                                <td> 22-11-2023 </td>
-                                <td> 070/3555-kesbangpol.poldagri </td>
-                                <td>  </td>
-                                <td> Permohonan PKL a.n Ananda Dastra  </td>
-                                <td> Kesbangpol </td>
-                                <td> Kesbaormas </td>
-                                <td> Edit Delete</td>
-                            </tr>
-                            <tr>
-                                <td> 2 </td>
-                                <td> 22-11-2023 </td>
-                                <td> 070/3555-kesbangpol.poldagri </td>
-                                <td>  </td>
-                                <td> Permohonan PKL a.n Ananda Dastra  </td>
-                                <td> Kesbangpol </td>
-                                <td> Kesbaormas </td>
-                                <td> Edit Delete</td>
-                            </tr>
+
+                            {data.map((item, index) => (
+                                <tr>
+                                    <td> {index + 1} </td>
+                                    <td> {item.date} </td>
+                                    <td> {item.letter_number} </td>
+                                    <td> {item.sifat == "true" ? "Biasa" : "Rahasia"} </td>
+                                    <td> {item.perihal}  </td>
+                                    <td> {item.dari} </td>
+                                    <td> {item.tujuan} </td>
+                                    <td> Edit Delete</td>
+                                </tr>
+                            ))}
                         </table>
                     </div>
                 </div>
@@ -52,37 +79,37 @@ export default function Home() {
                 <form className="wrapper2" action="/action_page.php">
                     <div style={{ display: "flex", flexDirection: "row" }}>
                         <div for="nsurat" style={{ width: "120px" }}> Nomor Surat : </div>
-                        <input type="text" id="nsurat" name="fname" value="" className="input" />
+                        <input onChange={(res) => setNomorSurat(res.target.value)} type="text" id="nsurat" name="fname" value={nomorSurat} className="input" />
                     </div>
                     <div style={{ display: "flex", flexDirection: "row" }}>
                         <div for="lname" style={{ width: "120px" }}> Sifat Surat : </div>
-                        <div style={{display:"flex", gap:"20px"}}>
+                        <div style={{ display: "flex", gap: "20px" }}>
                             <div>
-                                <input type="checkbox" id="vehicle1" name="vehicle1" value="biasa" />
-                                <label for="vehicle1"> Biasa </label>
+                                <input type="radio" onChange={(res) => setSifatSurat(res.target.value)} id="biasa" name="fav_language" value="true" />
+                                <label for="html"> Biasa </label>
                             </div>
                             <div>
-                                <input type="checkbox" id="vehicle2" name="vehicle2" value="rahasia" />
-                                <label for="vehicle2"> Rahasia </label>
+                                <input type="radio" onChange={(res) => setSifatSurat(res.target.value)} id="rahasia" name="fav_language" value="false" />
+                                <label for="css"> Rahasia </label>
                             </div>
                         </div>
                     </div>
                     <div style={{ display: "flex", flexDirection: "row" }}>
                         <div for="lname" style={{ width: "120px" }}> Perihal : </div>
-                        <input type="text" id="lname" name="lname" value="" className="input" />
+                        <input onChange={(res) => setPerihal(res.target.value)} type="text" id="lname" name="lname" value={perihal} className="input" />
                     </div>
                     <div style={{ display: "flex", flexDirection: "row" }}>
-                        <div for="dari" style={{width:"120px"}}> Dari : </div>
-                        <input type="text" id="dari" name="dari" value="" className="input" />
+                        <div for="dari" style={{ width: "120px" }}> Dari : </div>
+                        <input onChange={(res) => setDari(res.target.value)} type="text" id="dari" name="dari" value={dari} className="input" />
                     </div>
                     <div style={{ display: "flex", flexDirection: "row" }}>
-                        <div for="tujuan" style={{width:"120px"}}> Tujuan : </div>
-                        <input type="text" id="tujuan" name="tujuan" value="" className="input" />
-                    </div>
-                    <div>
-                        <input type="submit" value="Submit" className="submit" />
+                        <div for="tujuan" style={{ width: "120px" }}> Tujuan : </div>
+                        <input onChange={(res) => setTujuan(res.target.value)} type="text" id="tujuan" name="tujuan" value={tujuan} className="input" />
                     </div>
                 </form>
+                <div>
+                    <button className="submit" onClick={handleSubmit}>Submit</button>
+                </div>
             </div>
         </div>
     )
