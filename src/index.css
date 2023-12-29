@@ -3,6 +3,9 @@ html {
   margin: 0;
 }
 
+body {
+  font-family: 'Roboto', sans-serif;
+}
 .selection {
   display: flex;
   flex-direction: row;
@@ -13,7 +16,8 @@ html {
 
 .input {
   border-radius: 10px;
-  border: 1px black solid;
+  border: 1px grey solid;
+  padding: 5px;
 }
 
 .wrapper2 {
@@ -24,12 +28,12 @@ html {
 
 .input2 {
   border-radius: 10px;
-  border: 1px black solid;
+  border: 1px grey;
 }
 
 .submit {
   border-radius: 10px;
-  border: 1px black solid;
+  border: 1px grey;
   padding: 5px;
 }
 
@@ -38,13 +42,16 @@ html {
 }
 
 th {
-  padding: 20px;
-  border: 1px black solid;
-  background-color: red;
+  padding: 10px 20px;
+  border: 1px grey solid;
+  background-color: white;
+  border-radius: 20px;
+  color:rgb(18, 78, 168) ;
 }
 
 td {
-  padding: 20px;
+  padding: 10px 20px;
   border-radius: 10PX;
-  border: 1px black solid;
+  border: 1px grey solid;
+  border-radius: 20px;
 }
