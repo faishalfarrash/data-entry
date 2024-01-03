@@ -7,25 +7,30 @@ import {
     Checkbox,
     Button,
     Typography,
-  } from "@material-tailwind/react"
+} from "@material-tailwind/react"
 
 export default function Home() {
     const [nomorSurat, setNomorSurat] = useState();
     const data = JSON.parse(localStorage.getItem('data') || JSON.stringify([])) || [];
+    const [tanggalSurat, setTanggalSurat] = useState();
     const [sifatSurat, setSifatSurat] = useState();
     const [perihal, setPerihal] = useState();
     const [dari, setDari] = useState();
     const [tujuan, setTujuan] = useState();
+    const [penerima, setPenerima] = useState();
     const [isOpen, setIsOpen] = useState(false)
 
     const handleSubmit = () => {
         const inputData = {
             date: dayjs().format('DD/MM/YYYY (HH:mm)'),
+            tanggal_diterima: tanggalSurat,
             letter_number: nomorSurat,
             sifat: sifatSurat,
             perihal,
             dari,
             tujuan,
+            penerima,
+            status_surat: true,
         }
 
         const updated = [...data, inputData];
@@ -43,16 +48,15 @@ export default function Home() {
     }
 
     function handleEdit(value, idx) {
-        console.log(        data[idx])
         data[idx].letter_number = value.letter_number;
         localStorage.setItem("data", JSON.stringify(data));
+    }
 
-        // setIsOpen(true)
-        // setNomorSurat(value.letter_number)
-        // setSifatSurat(Boolean(value.sifat))
-        // setPerihal(value.perihal)
-        // setDari(value.dari)
-        // setTujuan(value.tujuan)
+    function handleDelete(idx) {
+        const arr = [...data]
+        arr.splice(idx, 1)
+        localStorage.setItem("data", JSON.stringify(arr));
+        window.location.reload()
     }
 
     return (
@@ -73,11 +77,14 @@ export default function Home() {
                             <tr>
                                 <th> No. </th>
                                 <th> Tanggal </th>
+                                <th> Tanggal Surat </th>
                                 <th> No. Surat </th>
                                 <th> Sifat Surat </th>
                                 <th> Perihal </th>
                                 <th> Dari </th>
                                 <th> Tujuan </th>
+                                <th> Nama Penerima </th>
+                                <th> Status </th>
                                 <th> Action </th>
                             </tr>
 
@@ -85,12 +92,15 @@ export default function Home() {
                                 <tr>
                                     <td> {index + 1} </td>
                                     <td> {item.date} </td>
+                                    <td> {item.tanggal_diterima} </td>
                                     <td> {item.letter_number} </td>
                                     <td> {item.sifat == "true" ? "Biasa" : "Rahasia"} </td>
                                     <td> {item.perihal}  </td>
                                     <td> {item.dari} </td>
                                     <td> {item.tujuan} </td>
-                                    <td><div className="flex gap-3"><div onClick={() => handleEdit(item,index)}> Edit </div><div> Delete </div></div></td>        
+                                    <td> {item.penerima} </td>
+                                    <td> {item.status_surat == true ? "Diterima" : "Ditolak"} </td>
+                                    <td><div className="flex gap-3"><div className="cursor-pointer text-blue-600 hover:underline" onClick={() => handleEdit(item, index)}> Edit </div><div className="cursor-pointer text-blue-600 hover:underline" onClick={() => handleDelete(index)}> Delete </div></div></td>
                                 </tr>
                             ))}
                         </table>
@@ -125,6 +135,14 @@ export default function Home() {
 
                                         <div>
                                             <form className="wrapper2" action="/action_page.php">
+                                                <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+                                                    <div for="penerima" style={{ width: "180px" }}> Tanggal Surat : </div>
+                                                    <input onChange={(res) => setTanggalSurat(res.target.value)} type="text" id="tanggal_diterima" name="tanggal_diterima" value={tanggalSurat} className="input" />
+                                                </div>
+                                                <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+                                                    <div for="penerima" style={{ width: "180px" }}> Nama Penerima : </div>
+                                                    <input onChange={(res) => setPenerima(res.target.value)} type="text" id="penerima" name="penerima" value={penerima} className="input" />
+                                                </div>
                                                 <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
                                                     <div for="nsurat" style={{ width: "120px" }}> Nomor Surat : </div>
                                                     <input onChange={(res) => setNomorSurat(res.target.value)} type="text" id="nsurat" name="fname" value={nomorSurat} className="input" />
