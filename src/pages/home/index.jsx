@@ -81,7 +81,7 @@ export default function Home() {
 
   const klikSearch = () => {
     const filteredItems = data.filter((res) =>
-      res.letter_number.toLowerCase().includes(searchVal.toLowerCase())
+      res.dari.toLowerCase().includes(searchVal.toLowerCase())
     );
 
     setData(filteredItems);
